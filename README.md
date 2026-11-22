@@ -1,4 +1,4 @@
-@@ -1,2 +1,33 @@
+
 # Projeto-individual-C-OPS
 Projeto individual
 # 🎮 Critical Ops
