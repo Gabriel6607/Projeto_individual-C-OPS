@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tempo de jogo | C-ops Tracker</title>
+    <link rel="stylesheet" href="../css/base.css"><link rel="stylesheet" href="../css/diario.css">
+    <script type="module" src="../js/painel.js"></script>
+</head><body>
+    <header class="topo" id="topo-diario"></header>
+    <main class="largura diario">
+        <header class="abertura"><div><span class="rotulo">Diário individual</span><h1>Seu tempo de jogo</h1><p class="apoio">Uma semana de ranqueadas, dia a dia.</p></div><a class="botao" id="novo-registro" href="cadastrarPartida.html">+ Registrar partidas</a></header>
+        <p id="mensagem" class="mensagem" role="status"></p>
+        <section class="bloco intervalo" aria-label="Período do painel">
+            <div><span class="rotulo">Sete dias</span><strong id="periodo">Carregando período…</strong></div>
+            <div class="acoes"><button class="botao secundario" id="anterior" disabled aria-label="Sete dias anteriores">←</button><label class="campo">Até o dia<input type="date" id="fim" min="2015-01-01" disabled></label><button class="botao secundario" id="proximo" disabled aria-label="Próximos sete dias">→</button></div>
+        </section>
+        <div id="resultado" hidden>
+            <dl class="indicadores"><div><dt>No dia selecionado</dt><dd id="dia"></dd></div><div><dt>Tempo na semana</dt><dd id="total"></dd></div><div><dt>Média por dia</dt><dd id="media"></dd></div><div><dt>Partidas na semana</dt><dd id="partidas"></dd></div></dl>
+            <div class="colunas">
+                <section class="bloco" id="tempo"><span class="rotulo">Tempo estimado</span><h2>Ritmo da semana</h2>
+                    <p id="comparacao" class="apoio"></p><figure><div id="barras" class="grafico" role="list" aria-label="Tempo estimado por dia"></div>
+                    <figcaption>Amarelo: tempo registrado. Laranja: dia com 2h ou mais. A média considera os sete dias, inclusive os sem registros.</figcaption></figure>
+                    <p id="pausa" class="lembrete"></p>
+                </section>
+                <section class="bloco" id="mapas"><span class="rotulo">Seu histórico completo</span><h2>Mapas mais jogados</h2><p class="apoio">Ordenados pelo número de partidas registradas.</p><ol id="lista-mapas" class="lista"></ol><p id="sem-mapas" class="vazio" hidden>Seu primeiro registro abre esta lista.</p></section>
+            </div>
+            <section class="bloco historico"><span class="rotulo">Registros manuais</span><h2>Histórico do período</h2><p class="apoio">Cada linha representa um lançamento. Se anotou algo errado, você pode excluí-lo e registrar novamente.</p><ul id="historico" class="lista"></ul><p id="sem-registros" class="vazio" hidden>Nenhuma partida registrada nesses sete dias.</p></section>
+        </div>
+    </main>
+</body></html>

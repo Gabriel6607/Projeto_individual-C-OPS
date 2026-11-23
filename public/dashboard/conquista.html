@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Conquistas | C-ops Tracker</title><link rel="stylesheet" href="../css/base.css"><link rel="stylesheet" href="../css/diario.css"><script type="module" src="../js/conquistas.js"></script>
+</head><body>
+    <header class="topo" id="topo-diario"></header><main class="largura diario">
+        <header class="abertura"><div><span class="rotulo">Caderno do jogador</span><h1>Minhas conquistas</h1><p class="apoio">Guarde momentos importantes e acompanhe como seu diário ganha forma.</p></div></header>
+        <p id="mensagem" class="mensagem" role="status"></p>
+        <section aria-labelledby="titulo-marcos"><h2 id="titulo-marcos">Marcos do diário</h2><div id="marcos" class="marcos"></div></section>
+        <div class="colunas"><section class="bloco"><span class="rotulo">Seu acervo</span><h2>Conquistas pessoais</h2><ul class="lista" id="pessoais"></ul><p id="sem-conquistas" class="vazio" hidden>Seu mural está vazio. Anote a primeira conquista no formulário.</p></section>
+        <section class="bloco"><h2 id="titulo-form">Adicionar conquista</h2><form id="conquista"><fieldset class="campos" disabled>
+            <label class="campo">Título<input name="titulo" maxlength="90" required placeholder="Ex.: respeitei o horário de estudar"></label>
+            <label class="campo">Data<input name="data" type="date" min="2015-01-01" required></label>
+            <label class="campo">O que esse marco significa? (opcional)<textarea name="nota" rows="3" maxlength="350"></textarea></label>
+            <div class="acoes"><button class="botao" id="salvar">Adicionar ao mural</button><button class="botao secundario" type="button" id="cancelar" hidden>Cancelar edição</button></div>
+        </fieldset></form></section></div>
+    </main>
+</body></html>

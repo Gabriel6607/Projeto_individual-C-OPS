@@ -1,0 +1,8 @@
+.galeria { padding-block: 3rem; }
+.galeria > p, .galeria .campo { margin-top: 1rem; }
+.galeria .campo { max-width: 20rem; }
+.atlas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1rem; margin-top: 2rem; }
+.atlas figure { padding: .7rem; }
+.atlas img { aspect-ratio: 16/9; width: 100%; object-fit: cover; border-radius: .5rem; }
+.atlas figcaption { display: grid; padding: .65rem; }
+.atlas strong { color: var(--texto); }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="64" viewBox="0 0 256 64" role="img" aria-labelledby="marca">
+    <title id="marca">C-ops Tracker</title>
+    <rect width="256" height="64" rx="8" fill="#1B1C1E"/>
+    <g fill="none" stroke="#FF8D09" stroke-width="3.5" stroke-linecap="round"><circle cx="25" cy="34" r="16"/><path d="M25 23v11l8 4M21 11h8"/></g>
+    <text x="50" y="43" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#E6E5EA">C-ops <tspan fill="#FFC116">Tracker</tspan></text>
+</svg>
