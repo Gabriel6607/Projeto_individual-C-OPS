@@ -45,9 +45,6 @@ CREATE TABLE partida (
     CONSTRAINT fk_partida_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id) ON DELETE CASCADE
 );
 
--- ============================================================================
--- INSERÇÃO DE DADOS INICIAIS (SEED)
--- ============================================================================
 
 -- Patentes do Critical Ops
 INSERT INTO patente (id, nome, ordem_nivel, cor_hex) VALUES

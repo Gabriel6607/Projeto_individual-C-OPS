@@ -1,7 +1,3 @@
-// ============================================================================
-// MÓDULO DE VALIDAÇÕES DE CAMPOS - C-OPS TIME TRACKER
-// ============================================================================
-
 var timerMensagem = null;
 
 function validarEmail(email) {
@@ -12,8 +8,23 @@ function validarEmail(email) {
 
 function validarIdJogo(idJogo) {
     if (!idJogo) return false;
-    var regexOitoDigitos = /^\d{8}$/;
-    return regexOitoDigitos.test(String(idJogo).trim());
+
+    let idTexto = String(idJogo).trim();
+
+    // Verifica se o ID possui exatos 8 dígitos
+    if (idTexto.length !== 8) {
+        return false;
+    }
+
+    // Laço de repetição for para verificar se cada caractere é um número de 0 a 9
+    for (let i = 0; i < idTexto.length; i++) {
+        let caractereAtual = idTexto[i];
+        if (caractereAtual < "0" || caractereAtual > "9") {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 function validarFormularioLogin(email, senha) {

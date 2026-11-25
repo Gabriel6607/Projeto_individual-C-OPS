@@ -1,7 +1,3 @@
-// ============================================================================
-// AUTENTICAÇÃO E CADASTRO - C-OPS TIME TRACKER
-// ============================================================================
-
 function formatarInputIdJogo(input) {
     input.value = input.value.replace(/\D/g, "").slice(0, 8);
     var contador = document.getElementById("contador_id_jogo");
