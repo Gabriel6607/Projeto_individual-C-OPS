@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="shortcut icon" href="../assets/icon/favicon2.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-Ops Time Tracker | Registrar Partida</title>
+
+    <link rel="stylesheet" href="../css/estilo.css">
+    <link rel="stylesheet" href="../css/dashboards.css">
+
+    <script src="../js/sessao.js"></script>
+    <script src="../js/validacoes.js"></script>
+</head>
+
+<body onload="inicializarTelaPartidas()">
+    <div class="janela">
+        <!-- Menu Lateral -->
+        <aside class="header-left">
+            <div class="sidebar-brand">
+                <span class="brand-tag">C-OPS</span>
+                <h1>TIME TRACKER</h1>
+            </div>
+
+            <div class="hello">
+                <span class="operator-label">JOGADOR</span>
+                <h3>Olá, <span id="b_usuario">Jogador</span>!</h3>
+                <span class="operator-id" id="b_id_jogo">#00000000</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="btn-nav-white">
+                    <a href="./dashboard.html">
+                        <h3>📊 Dashboard</h3>
+                    </a>
+                </div>
+
+                <div class="btn-nav">
+                    <h3>🎯 Registrar Partida</h3>
+                </div>
+            </nav>
+
+            <div class="btn-logout" onclick="limparSessao()">
+                <h3>Sair</h3>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="dash">
+            <div class="alerta_erro">
+                <div class="card_erro" id="cardErro">
+                    <span id="mensagem_erro"></span>
+                </div>
+            </div>
+
+            <header class="dash-topbar">
+                <div>
+                    <span class="dash-kicker">MINHAS PARTIDAS • CRITICAL OPS</span>
+                    <h2>Registrar Partida & Histórico</h2>
+                </div>
+                <div class="dash-topbar-actions">
+                    <a href="./dashboard.html" class="btn-refresh">&larr; Voltar para Dashboard</a>
+                </div>
+            </header>
+
+            <section class="partidas-layout">
+                <!-- Formulário de Registro de Partida -->
+                <div class="form-panel">
+                    <div class="chart-panel-header">
+                        <div>
+                            <h3>Nova Partida</h3>
+                            <p>Anote o tempo jogado, suas kills, mortes e o resultado da partida</p>
+                        </div>
+                        <span class="chart-tag" id="preview_kd_badge">K/D: 1.43</span>
+                    </div>
+
+                    <form id="form_partida" class="formulario" onsubmit="return salvarPartida()">
+                        <div class="form-row-2">
+                            <div class="campo">
+                                <label for="modo_jogo_input">Modo de Jogo:</label>
+                                <select id="modo_jogo_input">
+                                    <option value="Ranked Defuse">Ranked Defuse</option>
+                                    <option value="Team Deathmatch">Team Deathmatch</option>
+                                    <option value="Unranked Defuse">Unranked Defuse</option>
+                                    <option value="Elimination">Elimination</option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label for="mapa_input">Mapa:</label>
+                                <select id="mapa_input">
+                                    <option value="Plaza">Plaza</option>
+                                    <option value="Bureau">Bureau</option>
+                                    <option value="Raid">Raid</option>
+                                    <option value="Legacy">Legacy</option>
+                                    <option value="Canals">Canals</option>
+                                    <option value="Port">Port</option>
+                                    <option value="Grounded">Grounded</option>
+                                    <option value="Soar">Soar</option>
+                                    <option value="Village">Village</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row-3">
+                            <div class="campo">
+                                <label for="duracao_input">Duração (minutos):</label>
+                                <input
+                                    id="duracao_input"
+                                    type="number"
+                                    min="1"
+                                    max="300"
+                                    placeholder="Ex: 40"
+                                    value="40"
+                                >
+                            </div>
+
+                            <div class="campo">
+                                <label for="kills_input">Kills:</label>
+                                <input
+                                    id="kills_input"
+                                    type="number"
+                                    min="0"
+                                    max="200"
+                                    placeholder="Ex: 20"
+                                    value="20"
+                                    oninput="atualizarPreviewKd()"
+                                >
+                            </div>
+
+                            <div class="campo">
+                                <label for="mortes_input">Mortes:</label>
+                                <input
+                                    id="mortes_input"
+                                    type="number"
+                                    min="0"
+                                    max="200"
+                                    placeholder="Ex: 14"
+                                    value="14"
+                                    oninput="atualizarPreviewKd()"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="campo">
+                                <label for="resultado_input">Resultado da Partida:</label>
+                                <select id="resultado_input">
+                                    <option value="Vitoria">Vitória</option>
+                                    <option value="Derrota">Derrota</option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label for="data_partida_input">Data e Hora:</label>
+                                <input id="data_partida_input" type="datetime-local">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="botao">Salvar Partida</button>
+                    </form>
+                </div>
+
+                <!-- Histórico de Partidas do Usuário -->
+                <div class="history-panel">
+                    <div class="chart-panel-header">
+                        <div>
+                            <h3>Histórico de Partidas</h3>
+                            <p>Todas as partidas que você já cadastrou</p>
+                        </div>
+                        <span class="chart-tag" id="contador_partidas">0 partidas</span>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="tactical-table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Modo / Mapa</th>
+                                    <th>Tempo</th>
+                                    <th>Kills</th>
+                                    <th>Mortes</th>
+                                    <th>K/D</th>
+                                    <th>Resultado</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela_historico_partidas">
+                                <tr>
+                                    <td colspan="8" class="empty-row">Carregando histórico...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/partidas.js"></script>
+</body>
+
+</html>

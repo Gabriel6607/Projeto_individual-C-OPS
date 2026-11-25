@@ -1,5 +1,84 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Entrar | C-ops Tracker</title><link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/acesso.css"><script type="module" src="js/acesso.js"></script></head>
-<body><header class="topo"><div class="largura barra"><a class="marca" href="index.html"><img src="assets/home/c-ops-tracker.svg" alt="C-ops Tracker"></a><nav class="menu" aria-label="Principal"><a href="index.html#secao-projeto">Sobre o projeto</a><a href="cadastro.html">Criar conta</a></nav></div></header>
-<main class="largura acesso"><div><span class="rotulo">Área do jogador</span><h1>Volte ao seu diário.</h1><p class="apoio">Veja sua semana de jogo, reencontre seus mapas e anote a próxima conquista.</p></div>
-<section class="bloco"><h2>Entrar</h2><form class="campos" data-acao="entrar"><label class="campo">E-mail<input name="email" type="email" autocomplete="username" maxlength="254" required></label><label class="campo">Senha<input name="senha" type="password" autocomplete="current-password" maxlength="128" required></label><button class="botao">Entrar no painel</button></form><p class="mensagem" id="mensagem" role="status"></p><p>Primeira vez? <a href="cadastro.html">Crie uma conta.</a></p></section></main></body></html>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-Ops Time Tracker | Login</title>
+
+    <script src="./js/sessao.js"></script>
+    <script src="./js/validacoes.js"></script>
+    <script src="./js/autenticacao.js"></script>
+
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="icon" href="./assets/icon/favicon2.ico">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-tag">C-OPS</span>
+                <span class="brand-name">TIME TRACKER</span>
+            </a>
+            <ul class="navbar">
+                <li><a href="index.html">Início</a></li>
+                <li class="divider">|</li>
+                <li class="agora"><a href="login.html">Login</a></li>
+                <li><a href="cadastro.html" class="btn-nav-cta">Criar Conta</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Área de Login -->
+    <main class="login">
+        <div class="alerta_erro">
+            <div class="card_erro" id="cardErro">
+                <span id="mensagem_erro"></span>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="card card-login">
+                <span class="card-tag">LOGIN</span>
+                <h2>Bem-vindo de volta!</h2>
+                <p class="card-subtitle">Entre com seu e-mail e senha para acompanhar suas partidas e seu tempo de jogo.</p>
+
+                <form class="formulario" onsubmit="return entrar()">
+                    <div class="campo">
+                        <label for="email_input">E-mail:</label>
+                        <input id="email_input" type="email" placeholder="seuemail@exemplo.com" autocomplete="email">
+                    </div>
+
+                    <div class="campo">
+                        <label for="senha_input">Senha:</label>
+                        <input id="senha_input" type="password" placeholder="••••••" autocomplete="current-password">
+                    </div>
+
+                    <button type="submit" class="botao">Entrar</button>
+                </form>
+
+                <div class="auth-switch">
+                    Ainda não tem conta? <a href="cadastro.html">Cadastre-se aqui</a>
+                </div>
+
+                <div id="div_aguardar" class="loading-div">
+                    <img src="./assets/circle-loading.gif" id="loading-gif" alt="Carregando...">
+                </div>
+
+                <div id="div_erros_login"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <h4>C-Ops Time Tracker • Projeto Individual por Gabriel • SPTech &copy; 2026</h4>
+        </div>
+    </footer>
+</body>
+
+</html>

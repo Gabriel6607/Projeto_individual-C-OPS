@@ -1,55 +1,346 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-br">
+
 <head>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>C-ops Tracker</title>
-    <meta name="description" content="Um diário de partidas ranqueadas do Critical Ops: acompanhe seu tempo estimado, seus mapas e sua rotina.">
-    <link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/index.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-Ops Time Tracker | Equilíbrio e Desempenho no Critical Ops</title>
+
+    <script src="./js/sessao.js"></script>
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="icon" href="./assets/icon/favicon2.ico">
 </head>
+
 <body>
-    <header class="topo"><div class="largura barra">
-        <a class="marca" href="index.html"><img src="assets/home/c-ops-tracker.svg" alt="C-ops Tracker"></a>
-        <nav class="menu" aria-label="Principal"><a href="#secao-historia">O jogo</a><a href="#secao-modos">Modos</a><a href="#secao-projeto">O projeto</a><a href="login.html">Área do jogador →</a></nav>
-    </div></header>
-    <main>
-        <section id="reproducao" aria-labelledby="bemVindo">
-            <video width="384" height="832" autoplay loop muted playsinline><source src="assets/WhatsApp%20Video%202026-11-23%20at%2003.10.45.mp4" type="video/mp4"></video>
-            <div class="boas-vindas"><h1 id="bemVindo">Seja bem-vindo ao C-ops <span>Tracker</span></h1></div>
-        </section>
-        <img class="faixa-jogo" src="assets/home/bannerCops.png" alt="Banner de aniversário do Critical Ops">
-
-        <section class="largura secao dupla" id="secao-historia">
-            <figure class="foto"><img src="assets/home/fotoAntiga.png" alt="Partida do Critical Ops em 2015" loading="lazy"><figcaption>Critical Ops nos primeiros anos.</figcaption></figure>
-            <div><span class="rotulo">Sobre o jogo</span><h2>O que acontece entre uma partida e outra?</h2>
-                <p>Critical Ops reúne duas equipes em partidas táticas. No Desarmar Ranqueado, cada rodada exige concentração e decisões em conjunto.</p>
-                <p>É fácil lembrar o placar da última disputa. Já o tempo que passou desde a primeira nem sempre fica tão claro. O Tracker nasceu dessa diferença.</p></div>
-        </section>
-        <div class="largura bloco equipe" id="secao-desenvolvimento">
-            <img src="assets/WhatsApp%20Image%202026-11-22%20at%2019.40.59.jpeg" alt="Logo da equipe EY (Evolutyon)" loading="lazy">
-            <figure><video autoplay loop muted playsinline><source src="assets/WhatsApp%20Video%202026-11-22%20at%2019.36.42.mp4" type="video/mp4"></video><figcaption>Campeonato contra sM/Ev e XP.</figcaption></figure>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-tag">C-OPS</span>
+                <span class="brand-name">TIME TRACKER</span>
+            </a>
+            <ul class="navbar">
+                <li class="agora"><a href="index.html">Início</a></li>
+                <li><a href="#evolutyon">Minha História & Gameplay</a></li>
+                <li><a href="#objetivo">Sobre o Projeto</a></li>
+                <li><a href="#como-funciona">Como Funciona</a></li>
+                <li><a href="#patentes">Patentes</a></li>
+                <li class="divider">|</li>
+                <li><a href="login.html" class="nav-link-login">Login</a></li>
+                <li><a href="cadastro.html" class="btn-nav-cta">Criar Conta</a></li>
+            </ul>
         </div>
+    </header>
 
-        <section class="largura secao" id="secao-modos"><span class="rotulo">Critical Ops</span><h2>Principais modos de jogo</h2>
-            <div class="modos">
-                <article class="bloco"><img src="assets/home/defuse.png" alt="" loading="lazy"><h3>Desarmar</h3><p>Duas equipes se alternam entre ataque e defesa por rodadas.</p></article>
-                <article class="bloco"><img src="assets/home/ranked.png" alt="" loading="lazy"><h3>Ranqueado</h3><p>Versão competitiva do Desarmar. É o modo que entra no diário de tempo.</p></article>
-                <article class="bloco"><img src="assets/home/deathmatch.png" alt="" loading="lazy"><h3>Mata-mata</h3><p>Partidas rápidas com reaparecimento. Seus mapas também estão na galeria.</p></article>
-            </div><div class="acoes"><a class="botao secundario" href="mapas.html">Explorar mapas</a></div>
-        </section>
-
-        <section class="origem secao" aria-labelledby="titulo-origem"><div class="largura dupla">
-            <div><span class="rotulo">A história do Gabriel</span><h2 id="titulo-origem">Do J2 Prime à Evolutyon</h2>
-                <p>Gabriel descobriu o Critical Ops na Play Store em 2018. Jogava no Galaxy J2 Prime da mãe: o celular travava, mas a vontade de voltar para a próxima partida continuava.</p>
-                <ul class="linha-tempo"><li><strong>2022</strong> · Um ano inteiro longe do jogo.</li><li><strong>2023</strong> · O primeiro iPad marcou a volta às partidas e a entrada no competitivo.</li><li><strong>2024–2025</strong> · Com a EY (Evolutyon), vieram treinos e campeonatos. Perceber quando o jogo tomava o lugar de outras atividades inspirou o Tracker.</li></ul>
+    <!-- 1. Hero Banner com Foto Real do Critical Ops -->
+    <section class="banner">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <span class="hero-badge">CRITICAL OPS • CONSCIÊNCIA DE TEMPO & PERFORMANCE</span>
+                <h1>Acompanhe seu <span>Tempo de Jogo</span> e sua evolução no <span>Critical Ops</span>.</h1>
+                <p>
+                    Quem joga ranqueada sabe como é fácil emendar uma partida na outra e perder a noção das horas.
+                    O <strong>C-Ops Time Tracker</strong> foi criado para ajudar você a enxergar quanto tempo dedica ao jogo
+                    ao longo da semana, acompanhar seu <strong>K/D</strong> e manter o equilíbrio entre o competitivo e a sua rotina.
+                </p>
+                <div class="hero-actions">
+                    <a href="cadastro.html" class="btn-primary-hero">Começar Agora</a>
+                    <a href="login.html" class="btn-secondary-hero">Já tenho conta</a>
+                </div>
+                <div class="hero-stats-mini">
+                    <div>
+                        <strong>Dom – Sáb</strong>
+                        <span>Visão Semanal & Média Diária</span>
+                    </div>
+                    <div>
+                        <strong>Kills & Mortes</strong>
+                        <span>Acompanhamento de K/D</span>
+                    </div>
+                    <div>
+                        <strong>Equilíbrio</strong>
+                        <span>Consciência na Rotina</span>
+                    </div>
+                </div>
             </div>
-            <figure class="foto"><img src="assets/home/partida-gabriel.jpeg" alt="Captura de uma partida de Critical Ops do acervo de Gabriel" loading="lazy"><figcaption>Registro de partida incluído na documentação de Gabriel.</figcaption></figure>
-        </div></section>
 
-        <section class="largura secao dupla" id="secao-projeto"><div><span class="rotulo">Pesquisa e Inovação · ODS 3</span><h2>Quanto tempo coube nessa semana?</h2>
-            <p>Anote a data, o mapa e quantas ranqueadas jogou. O diário mostra como o tempo se distribuiu pelos dias, quais mapas apareceram mais e quando pode valer a pena fazer uma pausa.</p>
-            <p>O objetivo é reconhecer os próprios hábitos e reservar espaço para estudo, descanso e lazer.</p><div class="acoes"><a class="botao" href="cadastro.html">Criar meu diário</a><a href="login.html">Já tenho conta</a></div></div>
-            <aside class="bloco formula"><span class="rotulo">Como é feita a estimativa</span><strong>3 partidas × 40 min = 2h</strong><p>Cada lançamento é manual. A duração real de uma partida pode variar.</p></aside>
-        </section>
-    </main>
-    <footer class="rodape"><div class="largura"><span>C-ops Tracker · Gabriel · Pesquisa e Inovação / SPTECH</span><a href="https://criticalopsgame.com/">Site oficial do jogo</a></div></footer>
-</body></html>
+            <!-- Foto relacionada ao Critical Ops no Hero -->
+            <div class="hero-cops-visual">
+                <div class="cops-frame">
+                    <div class="cops-frame-topbar">
+                        <span class="hud-dot"></span>
+                        <span class="cops-frame-tag">CRITICAL OPS // PARTIDA EM EQUIPE</span>
+                        <span class="cops-fps-tag">5v5 DEFUSE</span>
+                    </div>
+                    <div class="cops-image-wrapper">
+                        <img src="./assets/imgs/cops-hero.jpg" alt="Partida de Critical Ops - Equipe Coalition CRTF">
+                        <div class="cops-image-overlay">
+                            <span class="overlay-chip">DESARMAR RANQUEADO</span>
+                            <span class="overlay-chip chip-amber">FOCO • EQUIPE • ESTRATÉGIA</span>
+                        </div>
+                    </div>
+                    <div class="cops-frame-footer">
+                        <div>
+                            <strong>Da diversão ao competitivo</strong>
+                            <span>Entenda seu ritmo de jogo ao longo da semana sem deixar sua rotina de lado.</span>
+                        </div>
+                        <a href="#evolutyon" class="frame-scroll-link">Conhecer minha história &darr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Seção Trajetória Competitiva: Time Evolutyon (EY) + Vídeo de Gameplay (Camp vs Ev/sM e XP) -->
+    <section id="evolutyon" class="section-evolutyon">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">MINHA TRAJETÓRIA NO JOGO</span>
+                <h2>Da Evolutyon (EY) para a ideia do C-Ops Time Tracker</h2>
+                <p>
+                    Uma iniciativa que nasceu da minha própria vivência dentro do Critical Ops, desde 2018 até os campeonatos competitivos.
+                </p>
+            </div>
+
+            <div class="evolutyon-grid">
+                <!-- Card Esquerdo: Logo e História do Time Evolutyon -->
+                <article class="evolutyon-team-card">
+                    <div class="team-logo-box">
+                        <img src="./assets/imgs/logo-evolutyon.jpg" alt="Logo Oficial do Time Evolutyon (EY)">
+                    </div>
+                    <div class="team-info">
+                        <span class="team-badge">CENÁRIO COMPETITIVO • 2024–2025</span>
+                        <h3>Equipe Evolutyon (EY)</h3>
+                        <p>
+                            Comecei a jogar Critical Ops em 2018 e, em 2024, alcancei meu auge competitivo ao entrar para o time
+                            <strong>Evolutyon (EY)</strong>, disputando campeonatos e treinos intensos. Foi vivendo essa rotina
+                            que percebi o quanto é fácil passar horas seguidas jogando e acabar deixando outras atividades importantes de lado.
+                        </p>
+                        <ul class="team-highlights">
+                            <li>
+                                <strong>Vivência no Competitivo:</strong> Participação em campeonatos, treinos em equipe e partidas de alto nível pela Evolutyon.
+                            </li>
+                            <li>
+                                <strong>Percepção do Tempo:</strong> Quando estamos focados em subir de patente ou vencer, as horas passam sem a gente notar.
+                            </li>
+                            <li>
+                                <strong>Propósito do Projeto:</strong> Criar um painel simples para o jogador acompanhar seu desempenho e perceber quando o tempo de jogo está passando do limite.
+                            </li>
+                        </ul>
+                    </div>
+                </article>
+
+                <!-- Card Direito: Vídeo de Gameplay em Loop e Mutado + Descrição Camp vs Ev/sM e XP -->
+                <article class="evolutyon-video-card">
+                    <div class="video-card-topbar">
+                        <div class="video-status">
+                            <span class="rec-dot"></span>
+                            <span>MINHA GAMEPLAY // COMPETITIVO</span>
+                        </div>
+                        <span class="match-tag">HIGHLIGHT</span>
+                    </div>
+
+                    <div class="video-wrapper">
+                        <video
+                            src="./assets/videos/gameplay-evolutyon.mp4"
+                            autoplay
+                            loop
+                            muted
+                            playsinline
+                        ></video>
+                    </div>
+
+                    <div class="video-description-box">
+                        <div class="video-title-row">
+                            <h4>Camp vs Ev/sM e XP</h4>
+                        </div>
+                        <p>
+                            Trecho da minha gameplay jogando competitivamente em campeonato (<strong>Camp vs Ev/sM e XP</strong>),
+                            mostrando na prática a dinâmica e a intensidade das partidas contra as equipes <strong>Ev/sM</strong> e <strong>XP</strong>.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Explicação do Objetivo da Plataforma -->
+    <section id="objetivo" class="section-objetivo">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">OBJETIVO DA PLATAFORMA</span>
+                <h2>Para que serve o C-Ops Time Tracker?</h2>
+                <p>
+                    Mais do que olhar números de partida, a proposta é ajudar você a visualizar sua rotina no Critical Ops
+                    de um jeito claro e consciente.
+                </p>
+            </div>
+
+            <div class="boxes">
+                <div class="box">
+                    <div class="box-icon">⏱️</div>
+                    <h4>Consciência do Tempo na Semana</h4>
+                    <p>
+                        Veja em um gráfico de barras quanto tempo você jogou de <strong>Domingo a Sábado</strong> e sua
+                        <strong>média diária</strong>, facilitando perceber rapidamente os dias em que você passou horas demais jogando.
+                    </p>
+                </div>
+
+                <div class="box">
+                    <div class="box-icon">🎯</div>
+                    <h4>Relação de Kills e Mortes (K/D)</h4>
+                    <p>
+                        Acompanhe suas médias de <strong>Kills</strong> e <strong>Mortes</strong> em um gráfico de linha simples,
+                        observando como seu desempenho varia ao longo das partidas registradas.
+                    </p>
+                </div>
+
+                <div class="box">
+                    <div class="box-icon">🏆</div>
+                    <h4>Patente & Taxa de Vitórias</h4>
+                    <p>
+                        Registre sua patente atual no jogo — do <strong>Iron</strong> ao <strong>Elite Ops</strong> — e acompanhe
+                        seu percentual de vitórias (Win Rate) em um só lugar.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Como Funciona (Passo a Passo) -->
+    <section id="como-funciona" class="section-steps">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">PASSO A PASSO</span>
+                <h2>Como usar o sistema</h2>
+                <p>Em poucos cliques você organiza suas partidas e acompanha sua semana.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <span class="step-number">01</span>
+                    <h4>Crie seu Perfil</h4>
+                    <p>
+                        Cadastre seu <strong>Nick no jogo</strong>, seu <strong>ID do Critical Ops (8 números)</strong>,
+                        e-mail e senha para ter seu espaço individual.
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <span class="step-number">02</span>
+                    <h4>Anote suas Partidas</h4>
+                    <p>
+                        Informe o mapa, modo de jogo, tempo da partida, suas <strong>Kills</strong>, <strong>Mortes</strong> e se foi
+                        <strong>Vitória ou Derrota</strong>.
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <span class="step-number">03</span>
+                    <h4>Acompanhe sua Rotina</h4>
+                    <p>
+                        Veja nos gráficos como está sua média de horas por dia e receba alertas visuais quando o tempo de jogo estiver muito alto.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Mapas Competitivos Monitorados -->
+    <section class="section-mapas">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">MAPAS DO JOGO</span>
+                <h2>Mapas do Critical Ops presentes na plataforma</h2>
+                <p>Registre suas partidas nos principais mapas jogados nas ranqueadas e campeonatos.</p>
+            </div>
+
+            <div class="mapas-grid">
+                <div class="mapa-chip"><strong>Plaza</strong><span>Desarmar Ranqueado</span></div>
+                <div class="mapa-chip"><strong>Bureau</strong><span>Desarmar Ranqueado</span></div>
+                <div class="mapa-chip"><strong>Raid</strong><span>Desarmar Ranqueado</span></div>
+                <div class="mapa-chip"><strong>Legacy</strong><span>Desarmar & Mata-Mata</span></div>
+                <div class="mapa-chip"><strong>Canals</strong><span>Desarmar Ranqueado</span></div>
+                <div class="mapa-chip"><strong>Port</strong><span>Desarmar Ranqueado</span></div>
+                <div class="mapa-chip"><strong>Grounded</strong><span>Desarmar Ranqueado</span></div>
+                <div class="mapa-chip"><strong>Soar</strong><span>Desarmar Ranqueado</span></div>
+                <div class="mapa-chip"><strong>Village</strong><span>Desarmar Ranqueado</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Hierarquia de Patentes do Critical Ops (sem referência de K/D) -->
+    <section id="patentes" class="section-patentes">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">RANQUEADAS</span>
+                <h2>Patentes do Critical Ops</h2>
+                <p>
+                    Acompanhe em qual patente você está atualmente dentro da jornada competitiva do jogo.
+                </p>
+            </div>
+
+            <div class="patentes-grid">
+                <div class="patente-card" style="border-top-color: #71717a;">
+                    <span class="patente-tier">PATENTE 1</span>
+                    <strong style="color: #a1a1aa;">Iron</strong>
+                </div>
+                <div class="patente-card" style="border-top-color: #b45309;">
+                    <span class="patente-tier">PATENTE 2</span>
+                    <strong style="color: #d97706;">Bronze</strong>
+                </div>
+                <div class="patente-card" style="border-top-color: #94a3b8;">
+                    <span class="patente-tier">PATENTE 3</span>
+                    <strong style="color: #cbd5e1;">Silver</strong>
+                </div>
+                <div class="patente-card" style="border-top-color: #eab308;">
+                    <span class="patente-tier">PATENTE 4</span>
+                    <strong style="color: #facc15;">Gold</strong>
+                </div>
+                <div class="patente-card" style="border-top-color: #06b6d4;">
+                    <span class="patente-tier">PATENTE 5</span>
+                    <strong style="color: #22d3ee;">Platinum</strong>
+                </div>
+                <div class="patente-card" style="border-top-color: #3b82f6;">
+                    <span class="patente-tier">PATENTE 6</span>
+                    <strong style="color: #60a5fa;">Diamond</strong>
+                </div>
+                <div class="patente-card" style="border-top-color: #a855f7;">
+                    <span class="patente-tier">PATENTE 7</span>
+                    <strong style="color: #c084fc;">Master</strong>
+                </div>
+                <div class="patente-card" style="border-top-color: #f97316;">
+                    <span class="patente-tier">PATENTE 8</span>
+                    <strong style="color: #fb923c;">Spec Ops</strong>
+                </div>
+                <div class="patente-card" style="border-top-color: #ef4444;">
+                    <span class="patente-tier">PATENTE 9</span>
+                    <strong style="color: #f87171;">Elite Ops</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Call to Action Final -->
+    <section class="section-cta">
+        <div class="container cta-box">
+            <div class="cta-text">
+                <h2>Comece a acompanhar seu tempo no Critical Ops</h2>
+                <p>Crie sua conta rápida ou faça login para acessar seu painel.</p>
+            </div>
+            <div class="cta-buttons">
+                <a href="cadastro.html" class="btn-primary-hero">Criar Conta</a>
+                <a href="login.html" class="btn-secondary-hero">Fazer Login</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <h4>C-Ops Time Tracker • Projeto Individual por Gabriel • SPTech &copy; 2026</h4>
+        </div>
+    </footer>
+</body>
+
+</html>

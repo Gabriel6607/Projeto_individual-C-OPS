@@ -1,5 +1,113 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Criar conta | C-ops Tracker</title><link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/acesso.css"><script type="module" src="js/acesso.js"></script></head>
-<body><header class="topo"><div class="largura barra"><a class="marca" href="index.html"><img src="assets/home/c-ops-tracker.svg" alt="C-ops Tracker"></a><nav class="menu" aria-label="Principal"><a href="index.html#secao-projeto">Sobre o projeto</a><a href="login.html">Entrar</a></nav></div></header>
-<main class="largura acesso"><div><span class="rotulo">Seu primeiro registro</span><h1>Abra seu diário de partidas.</h1><p class="apoio">Só você acompanha seus registros. Para começar, escolha como gostaria de ser chamado.</p></div>
-<section class="bloco"><h2>Criar conta</h2><form class="campos" data-acao="cadastrar"><label class="campo">Nome ou apelido<input name="nome" autocomplete="nickname" maxlength="80" required></label><label class="campo">E-mail<input name="email" type="email" autocomplete="email" maxlength="254" required></label><label class="campo">Senha (8 a 128 caracteres)<input name="senha" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></label><label class="campo">Confirme a senha<input name="confirmacao" type="password" autocomplete="new-password" maxlength="128" required></label><button class="botao">Criar meu diário</button></form><p class="mensagem" id="mensagem" role="status"></p><p>Já tem conta? <a href="login.html">Entre aqui.</a></p></section></main></body></html>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-Ops Time Tracker | Cadastro</title>
+
+    <script src="./js/sessao.js"></script>
+    <script src="./js/validacoes.js"></script>
+    <script src="./js/autenticacao.js"></script>
+
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="icon" href="./assets/icon/favicon2.ico">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-tag">C-OPS</span>
+                <span class="brand-name">TIME TRACKER</span>
+            </a>
+            <ul class="navbar">
+                <li><a href="index.html">Início</a></li>
+                <li class="divider">|</li>
+                <li><a href="login.html">Login</a></li>
+                <li class="agora"><a href="cadastro.html" class="btn-nav-cta">Criar Conta</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Área de Cadastro -->
+    <main class="login">
+        <div class="alerta_erro">
+            <div class="card_erro" id="cardErro">
+                <span id="mensagem_erro"></span>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="card card-cadastro">
+                <span class="card-tag">CRIAR CONTA</span>
+                <h2>Cadastre seu Perfil</h2>
+                <p class="card-subtitle">Preencha seus dados para começar a acompanhar suas horas de jogo e partidas no Critical Ops.</p>
+
+                <form class="formulario" onsubmit="return cadastrar()">
+                    <div class="form-row-2">
+                        <div class="campo">
+                            <label for="nick_input">Nick no jogo:</label>
+                            <input id="nick_input" type="text" maxlength="30" placeholder="Ex: GhostOps">
+                        </div>
+
+                        <div class="campo">
+                            <div class="label-with-counter">
+                                <label for="id_jogo_input">ID do jogo (8 números):</label>
+                                <small id="contador_id_jogo">0/8 dígitos</small>
+                            </div>
+                            <input
+                                id="id_jogo_input"
+                                type="text"
+                                inputmode="numeric"
+                                maxlength="8"
+                                placeholder="Ex: 48291037"
+                                oninput="formatarInputIdJogo(this)"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="email_input">E-mail:</label>
+                        <input id="email_input" type="email" placeholder="seuemail@exemplo.com">
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="campo">
+                            <label for="senha_input">Senha (mín. 6 caracteres):</label>
+                            <input id="senha_input" type="password" placeholder="••••••">
+                        </div>
+
+                        <div class="campo">
+                            <label for="confirmacao_senha_input">Confirmação de Senha:</label>
+                            <input id="confirmacao_senha_input" type="password" placeholder="••••••">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="botao">Cadastrar</button>
+                </form>
+
+                <div class="auth-switch">
+                    Já possui uma conta? <a href="login.html">Fazer Login</a>
+                </div>
+
+                <div id="div_aguardar" class="loading-div">
+                    <img src="./assets/circle-loading.gif" id="loading-gif" alt="Carregando...">
+                </div>
+
+                <div id="div_erros_login"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <h4>C-Ops Time Tracker • Projeto Individual por Gabriel • SPTech &copy; 2026</h4>
+        </div>
+    </footer>
+</body>
+
+</html>

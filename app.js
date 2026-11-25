@@ -1,54 +1,38 @@
+// var ambiente_processo = 'producao';
+var ambiente_processo = 'desenvolvimento';
+
+var caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
+
+require("dotenv").config({ path: caminho_env });
+
 var express = require("express");
+var cors = require("cors");
 var path = require("path");
-var caminhoEnv = process.argv.includes("--dev") ? ".env.dev" : ".env";
-require("dotenv").config({ path: path.join(__dirname, caminhoEnv) });
+var PORTA_APP = process.env.APP_PORT;
+var HOST_APP = process.env.APP_HOST;
+
+var app = express();
 
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
-var partidaRouter = require("./src/routes/partida");
-var estatisticaRouter = require("./src/routes/estatisticas");
-var conquistasRouter = require("./src/routes/conquistas");
+var partidasRouter = require("./src/routes/partidas");
 
-var app = express();
-app.disable("x-powered-by");
-app.use("/api", express.json({ limit: "16kb" }));
-app.use("/api", function (req, res, next) {
-    res.set("Cache-Control", "no-store");
-    next();
-});
-
-// Rotas da área do jogador
-app.use("/api", usuarioRouter);
-app.use("/api", partidaRouter);
-app.use("/api/painel", estatisticaRouter);
-app.use("/api/conquistas", conquistasRouter);
-app.use("/api", function (req, res) {
-    res.status(404).json({ erro: "Recurso não encontrado." });
-});
-
-app.use("/", indexRouter);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Resposta comum para falhas encaminhadas pelos controllers
-app.use(function (erro, req, res, next) {
-    var status = erro.status || 500;
-    var mensagem = erro.message;
+app.use(cors());
 
-    if (status >= 500) {
-        console.error("Falha na aplicação:", erro.code || erro.name);
-        mensagem = "Não foi possível acessar o diário agora. Tente novamente.";
-    } else if (erro.type === "entity.parse.failed") {
-        mensagem = "JSON inválido.";
-    }
+app.use("/", indexRouter);
+app.use("/usuarios", usuarioRouter);
+app.use("/partidas", partidasRouter);
 
-    res.status(status).json({ erro: mensagem });
+app.listen(PORTA_APP, function () {
+    console.log(`
+    ================================================================================
+                          C-OPS TIME TRACKER - SERVIDOR ATIVO
+    ================================================================================
+    Acesse no navegador: http://${HOST_APP}:${PORTA_APP}
+    Ambiente atual: ${process.env.AMBIENTE_PROCESSO} (Banco: ${process.env.DB_DATABASE})
+    ================================================================================\n`);
 });
-
-if (require.main === module) {
-    var porta = Number(process.env.APP_PORT || 8080);
-    app.listen(porta, function () {
-        console.log(`C-ops Tracker: http://${process.env.APP_HOST || "localhost"}:${porta}`);
-    });
-}
-
-module.exports = app;

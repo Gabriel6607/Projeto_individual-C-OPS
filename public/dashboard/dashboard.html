@@ -1,29 +1,219 @@
-<!doctype html>
-<html lang="pt-BR"><head>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tempo de jogo | C-ops Tracker</title>
-    <link rel="stylesheet" href="../css/base.css"><link rel="stylesheet" href="../css/diario.css">
-    <script type="module" src="../js/painel.js"></script>
-</head><body>
-    <header class="topo" id="topo-diario"></header>
-    <main class="largura diario">
-        <header class="abertura"><div><span class="rotulo">Diário individual</span><h1>Seu tempo de jogo</h1><p class="apoio">Uma semana de ranqueadas, dia a dia.</p></div><a class="botao" id="novo-registro" href="cadastrarPartida.html">+ Registrar partidas</a></header>
-        <p id="mensagem" class="mensagem" role="status"></p>
-        <section class="bloco intervalo" aria-label="Período do painel">
-            <div><span class="rotulo">Sete dias</span><strong id="periodo">Carregando período…</strong></div>
-            <div class="acoes"><button class="botao secundario" id="anterior" disabled aria-label="Sete dias anteriores">←</button><label class="campo">Até o dia<input type="date" id="fim" min="2015-01-01" disabled></label><button class="botao secundario" id="proximo" disabled aria-label="Próximos sete dias">→</button></div>
-        </section>
-        <div id="resultado" hidden>
-            <dl class="indicadores"><div><dt>No dia selecionado</dt><dd id="dia"></dd></div><div><dt>Tempo na semana</dt><dd id="total"></dd></div><div><dt>Média por dia</dt><dd id="media"></dd></div><div><dt>Partidas na semana</dt><dd id="partidas"></dd></div></dl>
-            <div class="colunas">
-                <section class="bloco" id="tempo"><span class="rotulo">Tempo estimado</span><h2>Ritmo da semana</h2>
-                    <p id="comparacao" class="apoio"></p><figure><div id="barras" class="grafico" role="list" aria-label="Tempo estimado por dia"></div>
-                    <figcaption>Amarelo: tempo registrado. Laranja: dia com 2h ou mais. A média considera os sete dias, inclusive os sem registros.</figcaption></figure>
-                    <p id="pausa" class="lembrete"></p>
-                </section>
-                <section class="bloco" id="mapas"><span class="rotulo">Seu histórico completo</span><h2>Mapas mais jogados</h2><p class="apoio">Ordenados pelo número de partidas registradas.</p><ol id="lista-mapas" class="lista"></ol><p id="sem-mapas" class="vazio" hidden>Seu primeiro registro abre esta lista.</p></section>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="shortcut icon" href="../assets/icon/favicon2.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-Ops Time Tracker | Dashboard</title>
+
+    <link rel="stylesheet" href="../css/estilo.css">
+    <link rel="stylesheet" href="../css/dashboards.css">
+
+    <script src="../js/sessao.js"></script>
+    <script src="../js/validacoes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body onload="inicializarDashboard()">
+    <div class="janela">
+        <!-- Menu Lateral -->
+        <aside class="header-left">
+            <div class="sidebar-brand">
+                <span class="brand-tag">C-OPS</span>
+                <h1>TIME TRACKER</h1>
             </div>
-            <section class="bloco historico"><span class="rotulo">Registros manuais</span><h2>Histórico do período</h2><p class="apoio">Cada linha representa um lançamento. Se anotou algo errado, você pode excluí-lo e registrar novamente.</p><ul id="historico" class="lista"></ul><p id="sem-registros" class="vazio" hidden>Nenhuma partida registrada nesses sete dias.</p></section>
-        </div>
-    </main>
-</body></html>
+
+            <div class="hello">
+                <span class="operator-label">JOGADOR</span>
+                <h3>Olá, <span id="b_usuario">Jogador</span>!</h3>
+                <span class="operator-id" id="b_id_jogo">#00000000</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="btn-nav">
+                    <h3>📊 Dashboard</h3>
+                </div>
+
+                <div class="btn-nav-white">
+                    <a href="./partidas.html">
+                        <h3>🎯 Registrar Partida</h3>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="btn-logout" onclick="limparSessao()">
+                <h3>Sair</h3>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal da Dashboard -->
+        <main class="dash">
+            <div class="alerta_erro">
+                <div class="card_erro" id="cardErro">
+                    <span id="mensagem_erro"></span>
+                </div>
+            </div>
+
+            <!-- Barra Superior -->
+            <header class="dash-topbar">
+                <div>
+                    <span class="dash-kicker">MEU PAINEL • CRITICAL OPS</span>
+                    <h2>Resumo da Semana & Desempenho</h2>
+                </div>
+                <div class="dash-topbar-actions">
+                    <a href="./partidas.html" class="btn-new-match">+ Registrar Partida</a>
+                </div>
+            </header>
+
+            <!-- Régua / Legenda de Indicadores com Cores -->
+            <section class="area-parametros-alerta">
+                <p class="titulo-legenda">Referência dos Indicadores de Tempo Diário e Desempenho</p>
+                <div class="parametros-alerta">
+                    <div class="item-regua regua-ideal">
+                        <p>Equilibrado / Bom</p>
+                        <p>Até 2h/dia | KD &ge; 1.20 | Win Rate &ge; 55%</p>
+                    </div>
+                    <div class="item-regua regua-atencao">
+                        <p>Atenção / Moderado</p>
+                        <p>2h a 3h30/dia | KD 1.00–1.19 | Win Rate 45%–54%</p>
+                    </div>
+                    <div class="item-regua regua-critico">
+                        <p>Alerta / Muitas Horas</p>
+                        <p>Acima de 3h30/dia (Hora de pausar) | KD &lt; 1.00</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4 KPIs Principais -->
+            <section class="kpis-grid">
+                <!-- KPI 1: Tempo Total na Semana (Dom a Sáb) e Média Diária -->
+                <article class="kpi-card" id="card_kpi_tempo">
+                    <div class="kpi-header">
+                        <span class="kpi-title">TEMPO NA SEMANA (DOM–SÁB)</span>
+                        <span class="kpi-indicator" id="ind_tempo">Calculando...</span>
+                    </div>
+                    <div class="kpi-main-value" id="kpi_tempo_total">0h 00m</div>
+                    <div class="kpi-sub-metrics">
+                        <div>
+                            <span class="sub-label">Média Diária:</span>
+                            <strong id="kpi_media_diaria">0 min/dia</strong>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- KPI 2: Média de Kills e Mortes (KD) -->
+                <article class="kpi-card" id="card_kpi_kd">
+                    <div class="kpi-header">
+                        <span class="kpi-title">MÉDIA DE KILLS & MORTES (K/D)</span>
+                        <span class="kpi-indicator" id="ind_kd">Calculando...</span>
+                    </div>
+                    <div class="kpi-main-value" id="kpi_kd_geral">0.00</div>
+                    <div class="kpi-sub-metrics">
+                        <div>
+                            <span class="sub-label">Média por Partida:</span>
+                            <strong id="kpi_media_km">0.0 Kills / 0.0 Mortes</strong>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- KPI 3: Patente -->
+                <article class="kpi-card" id="card_kpi_patente">
+                    <div class="kpi-header">
+                        <span class="kpi-title">PATENTE ATUAL</span>
+                        <span class="kpi-indicator" id="ind_patente">Patente</span>
+                    </div>
+                    <div class="kpi-main-value" id="kpi_patente_nome">Iron</div>
+                    <div class="kpi-sub-metrics kpi-patente-controls">
+                        <span class="sub-label">Sua patente no jogo:</span>
+                        <select id="select_patente_rapida" onchange="alterarPatenteUsuario(this.value)" title="Selecionar minha patente">
+                            <option value="">Selecionar...</option>
+                        </select>
+                    </div>
+                </article>
+
+                <!-- KPI 4: Win Rating -->
+                <article class="kpi-card" id="card_kpi_winrate">
+                    <div class="kpi-header">
+                        <span class="kpi-title">WIN RATE (VITÓRIAS)</span>
+                        <span class="kpi-indicator" id="ind_winrate">Calculando...</span>
+                    </div>
+                    <div class="kpi-main-value" id="kpi_winrate_valor">0.0%</div>
+                    <div class="kpi-sub-metrics">
+                        <div>
+                            <span class="sub-label">Placar Geral:</span>
+                            <strong id="kpi_placar_vitorias">0V - 0D (0 partidas)</strong>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Gráficos Chart.js -->
+            <section class="charts-grid">
+                <!-- Gráfico 1: Barras - Tempo Total Jogado na Semana (Domingo a Sábado) + Média Diária -->
+                <div class="chart-panel">
+                    <div class="chart-panel-header">
+                        <div>
+                            <h3>Tempo Jogado na Semana (Domingo a Sábado)</h3>
+                            <p id="subtitulo_grafico_tempo">Comparação do tempo jogado em cada dia com a sua média diária</p>
+                        </div>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="canvasTempoSemanal"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico 2: Linha - K/D Acumulado -->
+                <div class="chart-panel">
+                    <div class="chart-panel-header">
+                        <div>
+                            <h3>Evolução do K/D Acumulado</h3>
+                            <p>Progressão do seu K/D geral somando todas as partidas até o momento</p>
+                        </div>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="canvasRelacaoKd"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabela Resumo das Últimas Partidas -->
+            <section class="recent-matches-panel">
+                <div class="chart-panel-header">
+                    <div>
+                        <h3>Últimas Partidas</h3>
+                        <p>Resumo das suas partidas mais recentes</p>
+                    </div>
+                    <a href="./partidas.html" class="link-manage-matches">Ver todas / Registrar nova &rarr;</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="tactical-table">
+                        <thead>
+                            <tr>
+                                <th>Data / Hora</th>
+                                <th>Modo de Jogo</th>
+                                <th>Mapa</th>
+                                <th>Duração</th>
+                                <th>Kills</th>
+                                <th>Mortes</th>
+                                <th>K/D</th>
+                                <th>Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela_ultimas_partidas">
+                            <tr>
+                                <td colspan="8" class="empty-row">Carregando partidas...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/dashboard.js"></script>
+</body>
+
+</html>

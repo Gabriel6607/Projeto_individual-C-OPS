@@ -1,47 +1,101 @@
 var database = require("../database/config");
-var diarioModel = require("./diarioModel");
 
-function listarMapas() {
-    var instrucaoSql = "SELECT id, nome, imagem, ranqueado FROM mapa ORDER BY nome";
+function registrarPartida(fkUsuario, modoJogo, mapa, duracaoMinutos, kills, mortes, resultado, dataPartida) {
+    console.log("ACESSEI O PARTIDA MODEL - function registrarPartida():", fkUsuario, modoJogo, mapa);
+    var instrucaoSql = `
+        INSERT INTO partida (fk_usuario, modo_jogo, mapa, duracao_minutos, kills, mortes, resultado, data_partida)
+        VALUES (${Number(fkUsuario)}, '${modoJogo}', '${mapa}', ${Number(duracaoMinutos)}, ${Number(kills)}, ${Number(mortes)}, '${resultado}', '${dataPartida}');
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-async function cadastrar(idUsuario, data, idMapa, quantidade) {
-    var conexao = await database.pool.getConnection();
-    try {
-        await conexao.beginTransaction();
-
-        // Duas abas do mesmo jogador não podem ultrapassar juntas o limite diário.
-        await database.executar("SELECT id FROM usuario WHERE id = ? FOR UPDATE", [idUsuario], conexao);
-        var totalDia = await database.executar(`
-            SELECT COALESCE(SUM(quantidade), 0) AS partidas FROM registro_partida
-            WHERE usuario_id = ? AND data_jogo = ?`, [idUsuario, data], conexao);
-
-        if (totalDia[0].partidas + quantidade > diarioModel.MAXIMO_DIARIO) {
-            throw diarioModel.falha(400, `O total do dia passaria de ${diarioModel.MAXIMO_DIARIO} partidas (24h estimadas). Confira a quantidade.`);
-        }
-
-        var instrucaoSql = `
-            INSERT INTO registro_partida (usuario_id, data_jogo, mapa_id, quantidade)
-            SELECT ?, ?, id, ? FROM mapa WHERE id = ? AND ranqueado = 1`;
-        var resultado = await database.executar(instrucaoSql, [idUsuario, data, quantidade, idMapa], conexao);
-        if (!resultado.affectedRows) {
-            throw diarioModel.falha(400, "Escolha um mapa da lista de ranqueadas.");
-        }
-
-        await conexao.commit();
-        return resultado;
-    } catch (erro) {
-        await conexao.rollback();
-        throw erro;
-    } finally {
-        conexao.release();
-    }
+function buscarKpisUsuario(idUsuario) {
+    console.log("ACESSEI O PARTIDA MODEL - function buscarKpisUsuario():", idUsuario);
+    var instrucaoSql = `
+        SELECT 
+            u.id AS idUsuario,
+            u.nick,
+            u.id_jogo AS idJogo,
+            u.fk_patente AS fkPatente,
+            pat.nome AS patenteSalva,
+            pat.cor_hex AS corPatenteSalva,
+            pat.ordem_nivel AS nivelPatenteSalva,
+            COALESCE(SUM(CASE WHEN YEARWEEK(p.data_partida, 0) = YEARWEEK(CURDATE(), 0) THEN p.duracao_minutos ELSE 0 END), 0) AS tempoTotalSemanaMinutos,
+            ROUND(COALESCE(SUM(CASE WHEN YEARWEEK(p.data_partida, 0) = YEARWEEK(CURDATE(), 0) THEN p.duracao_minutos ELSE 0 END), 0) / 7, 1) AS mediaDiariaMinutos,
+            COUNT(p.id) AS totalPartidas,
+            COALESCE(SUM(p.kills), 0) AS totalKills,
+            COALESCE(SUM(p.mortes), 0) AS totalMortes,
+            ROUND(COALESCE(AVG(p.kills), 0), 1) AS mediaKills,
+            ROUND(COALESCE(AVG(p.mortes), 0), 1) AS mediaMortes,
+            ROUND(COALESCE(SUM(p.kills) / GREATEST(SUM(p.mortes), 1), 0), 2) AS kdGeral,
+            COALESCE(SUM(CASE WHEN p.resultado = 'Vitoria' THEN 1 ELSE 0 END), 0) AS totalVitorias,
+            COALESCE(SUM(CASE WHEN p.resultado = 'Derrota' THEN 1 ELSE 0 END), 0) AS totalDerrotas,
+            ROUND(COALESCE((SUM(CASE WHEN p.resultado = 'Vitoria' THEN 1 ELSE 0 END) / NULLIF(COUNT(p.id), 0)) * 100, 0), 1) AS winRate
+        FROM usuario u
+        JOIN patente pat ON u.fk_patente = pat.id
+        LEFT JOIN partida p ON p.fk_usuario = u.id
+        WHERE u.id = ${Number(idUsuario)}
+        GROUP BY u.id, u.nick, u.id_jogo, u.fk_patente, pat.nome, pat.cor_hex, pat.ordem_nivel;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
 }
 
-function excluir(idRegistro, idUsuario) {
-    var instrucaoSql = "DELETE FROM registro_partida WHERE id = ? AND usuario_id = ?";
-    return database.executar(instrucaoSql, [idRegistro, idUsuario]);
+function buscarTempoSemanalPorDia(idUsuario) {
+    console.log("ACESSEI O PARTIDA MODEL - function buscarTempoSemanalPorDia():", idUsuario);
+    var instrucaoSql = `
+        SELECT 
+            DAYOFWEEK(data_partida) AS diaSemanaNum,
+            COALESCE(SUM(duracao_minutos), 0) AS minutosJogados,
+            COUNT(id) AS qtdPartidas
+        FROM partida
+        WHERE fk_usuario = ${Number(idUsuario)}
+          AND YEARWEEK(data_partida, 0) = YEARWEEK(CURDATE(), 0)
+        GROUP BY DAYOFWEEK(data_partida)
+        ORDER BY diaSemanaNum ASC;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
 }
 
-module.exports = { listarMapas, cadastrar, excluir };
+function buscarHistoricoKd(idUsuario) {
+    console.log("ACESSEI O PARTIDA MODEL - function buscarHistoricoKd():", idUsuario);
+    var instrucaoSql = `
+        SELECT 
+            p.id,
+            p.modo_jogo AS modoJogo,
+            p.mapa,
+            p.duracao_minutos AS duracaoMinutos,
+            p.kills,
+            p.mortes,
+            ROUND(p.kills / GREATEST(p.mortes, 1), 2) AS kdPartida,
+            p.resultado,
+            DATE_FORMAT(p.data_partida, '%d/%m %H:%i') AS dataFormatada,
+            DATE_FORMAT(p.data_partida, '%Y-%m-%dT%H:%i') AS dataIso
+        FROM partida p
+        JOIN usuario u ON p.fk_usuario = u.id
+        WHERE p.fk_usuario = ${Number(idUsuario)}
+        ORDER BY p.data_partida ASC, p.id ASC;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function deletarPartida(idPartida, idUsuario) {
+    console.log("ACESSEI O PARTIDA MODEL - function deletarPartida():", idPartida, idUsuario);
+    var instrucaoSql = `
+        DELETE FROM partida
+        WHERE id = ${Number(idPartida)} AND fk_usuario = ${Number(idUsuario)};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+module.exports = {
+    registrarPartida,
+    buscarKpisUsuario,
+    buscarTempoSemanalPorDia,
+    buscarHistoricoKd,
+    deletarPartida
+};

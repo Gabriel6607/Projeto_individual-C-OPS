@@ -1,21 +1,20 @@
 {
-  "name": "c-ops-tracker",
+  "name": "cops-time-tracker",
   "version": "1.0.0",
-  "description": "Diário individual de tempo estimado de jogo no Critical Ops",
+  "description": "C-Ops Time Tracker - Dashboard de monitoramento de tempo de jogo, desempenho e bem-estar digital no Critical Ops",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js --dev",
-    "test": "node --test"
+    "dev": "nodemon --exec node app.js"
   },
   "author": "Gabriel",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.17.1",
-    "mysql2": "^3.9.4"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
+    "mysql2": "^3.9.4",
+    "nodemon": "^2.0.7",
+    "path": "^0.12.7"
   }
 }
