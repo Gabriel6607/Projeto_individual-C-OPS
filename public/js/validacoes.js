@@ -27,6 +27,55 @@ function validarIdJogo(idJogo) {
     return true;
 }
 
+function verificarRequisitosSenha(senha) {
+    let textoSenha = String(senha || "");
+    let temMinimo = textoSenha.length >= 6;
+    let temMaiuscula = false;
+    let temEspecial = false;
+    let caracteresEspeciais = "!@#$%&*?._-+=";
+
+    // Laço de repetição for para verificar se há pelo menos 1 letra maiúscula e 1 caractere especial
+    for (let i = 0; i < textoSenha.length; i++) {
+        let caractereAtual = textoSenha[i];
+
+        if (caractereAtual >= "A" && caractereAtual <= "Z") {
+            temMaiuscula = true;
+        }
+
+        if (caracteresEspeciais.includes(caractereAtual)) {
+            temEspecial = true;
+        }
+    }
+
+    return {
+        temMinimo: temMinimo,
+        temMaiuscula: temMaiuscula,
+        temEspecial: temEspecial,
+        valida: temMinimo && temMaiuscula && temEspecial
+    };
+}
+
+function atualizarChecklistSenha(senha) {
+    let status = verificarRequisitosSenha(senha);
+
+    let itemMinimo = document.getElementById("req_minimo");
+    let itemMaiuscula = document.getElementById("req_maiuscula");
+    let itemEspecial = document.getElementById("req_especial");
+
+    if (itemMinimo) {
+        itemMinimo.className = status.temMinimo ? "req-item atendido" : "req-item";
+        itemMinimo.innerHTML = (status.temMinimo ? "✓ " : "• ") + "Mínimo de 6 caracteres";
+    }
+    if (itemMaiuscula) {
+        itemMaiuscula.className = status.temMaiuscula ? "req-item atendido" : "req-item";
+        itemMaiuscula.innerHTML = (status.temMaiuscula ? "✓ " : "• ") + "Pelo menos 1 letra maiúscula (A–Z)";
+    }
+    if (itemEspecial) {
+        itemEspecial.className = status.temEspecial ? "req-item atendido" : "req-item";
+        itemEspecial.innerHTML = (status.temEspecial ? "✓ " : "• ") + "Pelo menos 1 caractere especial (!@#$%&*)";
+    }
+}
+
 function validarFormularioLogin(email, senha) {
     if (!email || email.trim() === "" || !senha || senha.trim() === "") {
         return {
@@ -87,10 +136,26 @@ function validarFormularioCadastro(nick, idJogo, email, senha, confirmacaoSenha)
         };
     }
 
-    if (senha.length < 6) {
+    var statusSenha = verificarRequisitosSenha(senha);
+
+    if (!statusSenha.temMinimo) {
         return {
             valido: false,
-            mensagem: "A senha deve ter no mínimo 6 caracteres para sua segurança."
+            mensagem: "A senha deve ter no mínimo 6 caracteres."
+        };
+    }
+
+    if (!statusSenha.temMaiuscula) {
+        return {
+            valido: false,
+            mensagem: "A senha deve conter pelo menos 1 letra maiúscula (de A a Z)."
+        };
+    }
+
+    if (!statusSenha.temEspecial) {
+        return {
+            valido: false,
+            mensagem: "A senha deve conter pelo menos 1 caractere especial (ex: ! @ # $ % & *)."
         };
     }
 

@@ -114,6 +114,9 @@ function cadastrar() {
                 document.getElementById("email_input").value = "";
                 document.getElementById("senha_input").value = "";
                 document.getElementById("confirmacao_senha_input").value = "";
+                if (typeof atualizarChecklistSenha === "function") {
+                    atualizarChecklistSenha("");
+                }
 
                 finalizarAguardar();
 

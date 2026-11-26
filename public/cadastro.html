@@ -76,13 +76,27 @@
 
                     <div class="form-row-2">
                         <div class="campo">
-                            <label for="senha_input">Senha (mín. 6 caracteres):</label>
-                            <input id="senha_input" type="password" placeholder="••••••">
+                            <label for="senha_input">Senha:</label>
+                            <input
+                                id="senha_input"
+                                type="password"
+                                placeholder="Ex: Ghost@123"
+                                oninput="atualizarChecklistSenha(this.value)"
+                            >
                         </div>
 
                         <div class="campo">
                             <label for="confirmacao_senha_input">Confirmação de Senha:</label>
                             <input id="confirmacao_senha_input" type="password" placeholder="••••••">
+                        </div>
+                    </div>
+
+                    <div class="requisitos-senha">
+                        <span class="requisitos-titulo">Requisitos da senha:</span>
+                        <div class="requisitos-lista">
+                            <span id="req_minimo" class="req-item">• Mínimo de 6 caracteres</span>
+                            <span id="req_maiuscula" class="req-item">• Pelo menos 1 letra maiúscula (A–Z)</span>
+                            <span id="req_especial" class="req-item">• Pelo menos 1 caractere especial (!@#$%&*)</span>
                         </div>
                     </div>
 
